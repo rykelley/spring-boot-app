@@ -1,0 +1,8 @@
+/home/ubuntu/spring-boot-app/src/test/java/com/futureairlies/casestudy/config/WebConfigurerTest.java
+/home/ubuntu/spring-boot-app/src/test/java/com/futureairlies/casestudy/web/rest/errors/ExceptionTranslatorIT.java
+/home/ubuntu/spring-boot-app/src/test/java/com/futureairlies/casestudy/web/rest/TestUtil.java
+/home/ubuntu/spring-boot-app/src/test/java/com/futureairlies/casestudy/security/SecurityUtilsUnitTest.java
+/home/ubuntu/spring-boot-app/src/test/java/com/futureairlies/casestudy/web/rest/errors/ExceptionTranslatorTestController.java
+/home/ubuntu/spring-boot-app/src/test/java/com/futureairlies/casestudy/security/jwt/TokenProviderTest.java
+/home/ubuntu/spring-boot-app/src/test/java/com/futureairlies/casestudy/config/WebConfigurerTestController.java
+/home/ubuntu/spring-boot-app/src/test/java/com/futureairlies/casestudy/security/jwt/JWTFilterTest.java
