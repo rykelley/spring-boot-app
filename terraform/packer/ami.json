@@ -1,7 +1,7 @@
 {
   "builders": [{
-    "ami_name": "packer-example",
-    "instance_type": "t2.micro",
+    "ami_name": "packer-spring-boot",
+    "instance_type": "t2.small",
     "region": "us-east-2",
     "type": "amazon-ebs",
     "source_ami": "ami-0c55b159cbfafe1f0",

@@ -1,6 +1,5 @@
 
 terraform {
-  # This module has been updated with 0.12 syntax, which means it is no longer compatible with any versions below 0.12.
   required_version = ">= 0.12"
 }
 
@@ -109,7 +108,7 @@ resource "aws_security_group_rule" "allow_outbound_all" {
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.instance.id
 }
-# would not normally do this but i ran out of time. 
+# would not normally do this but i ran out of time.
 resource "aws_security_group_rule" "allow_inbound_ssh_from_cidr" {
   count             = var.allow_ssh_from_cidr ? 1 : 0
   type              = "ingress"
