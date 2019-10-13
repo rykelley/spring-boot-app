@@ -49,7 +49,7 @@ variable "allow_ssh_from_cidr" {
   type        = bool
   default     = true
 }
-
+#bad practice here. Don't do this. 
 variable "allow_ssh_from_cidr_list" {
   description = "A list of IP address ranges in CIDR format from which SSH access will be permitted. Attempts to access the bastion host from all other IP addresses will be blocked. This is only used if var.allow_ssh_from_cidr is true."
   type        = list(string)

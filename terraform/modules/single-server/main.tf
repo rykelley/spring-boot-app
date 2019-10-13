@@ -4,10 +4,6 @@ terraform {
   required_version = ">= 0.12"
 }
 
-# ---------------------------------------------------------------------------------------------------------------------
-# LAUNCH AN EC2 INSTANCE
-# ---------------------------------------------------------------------------------------------------------------------
-
 resource "aws_instance" "instance" {
   ami                    = var.ami
   instance_type          = var.instance_type
@@ -19,7 +15,7 @@ resource "aws_instance" "instance" {
   tenancy                = var.tenancy
   source_dest_check      = var.source_dest_check
 
-  # We want to set the name of the resource with var.name, but all other tags should be settable with var.tags.
+
   tags = merge(
     { "Name" = var.name },
     var.tags,
@@ -113,7 +109,7 @@ resource "aws_security_group_rule" "allow_outbound_all" {
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.instance.id
 }
-
+# would not normally do this but i ran out of time. 
 resource "aws_security_group_rule" "allow_inbound_ssh_from_cidr" {
   count             = var.allow_ssh_from_cidr ? 1 : 0
   type              = "ingress"
