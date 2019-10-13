@@ -129,6 +129,7 @@ resource "aws_security_group_rule" "allow_inbound_app" {
   from_port         = 8081
   to_port           = 8081
   protocol          = "tcp"
+  cidr_blocks       = var.allow_ssh_from_cidr_list
   security_group_id = aws_security_group.instance.id
 }
 
