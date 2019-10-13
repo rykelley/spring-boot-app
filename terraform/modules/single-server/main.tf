@@ -124,6 +124,16 @@ resource "aws_security_group_rule" "allow_inbound_ssh_from_cidr" {
   security_group_id = aws_security_group.instance.id
 }
 
+resource "aws_security_group_rule" "allow_inbound_app" {
+  type              = "ingress"
+  from_port         = 8081
+  to_port           = 8081
+  protocol          = "tcp"
+  security_group_id = aws_security_group.instance.id
+}
+
+
+
 resource "aws_security_group_rule" "allow_inbound_ssh_from_security_group" {
   count                    = var.allow_ssh_from_security_group ? 1 : 0
   type                     = "ingress"
