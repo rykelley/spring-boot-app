@@ -699,6 +699,9 @@
                         <configuration>
                             <mainClass>${start-class}</mainClass>
                             <executable>true</executable>
+                            <embeddedLaunchScriptProperties>
+                                  <mode>service</mode>
+                            </embeddedLaunchScriptProperties>
                         </configuration>
                         <executions>
                             <execution>
