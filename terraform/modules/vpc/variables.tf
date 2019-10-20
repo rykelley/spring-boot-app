@@ -121,8 +121,6 @@ variable "private_subnet_bits" {
   default     = 5
 }
 
-
-
 variable "map_public_ip_on_launch" {
   description = "Specify true to indicate that instances launched into the public subnet should be assigned a public IP address (versus a private IP address)"
   type        = bool

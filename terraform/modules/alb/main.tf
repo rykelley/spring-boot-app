@@ -9,7 +9,7 @@ provider "aws" {
 }
 
 module "asg" {
-  source = "../asg-rolling-deploy"
+  source = "../asg"
 
   cluster_name = var.cluster_name
 

@@ -34,7 +34,6 @@ output "public_subnet_route_table_id" {
 }
 
 
-
 output "nat_gateway_public_ips" {
   value = module.vpc_app_ecs.nat_gateway_public_ips
 }

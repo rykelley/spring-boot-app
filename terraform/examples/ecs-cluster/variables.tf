@@ -37,7 +37,7 @@ variable "ecs_cluster_instance_keypair_name" {
 variable "ecs_cluster_vpc_subnet_ids" {
   description = "A list of subnet ids in which the ECS cluster should be deployed."
   type        = list(string)
-  #  default     = [subnet-0e922442, subnet-0e922442, subnet-b9014fc3]
+  default     = ["subnet-0e922442", "subnet-0e922442", "subnet-b9014fc3"]
 }
 
 variable "vpc_id" {
@@ -73,11 +73,11 @@ variable "container_http_port" {
 variable "alb_vpc_subnet_ids" {
   description = "A list of the subnets into which the ALB will place its underlying nodes. Include one subnet per Availabability Zone. If the ALB is public-facing, these should be public subnets. Otherwise, they should be private subnets."
   type        = list(string)
-  #  default = [
-  #    "subnet-0e922442",
-  #    "subnet-2289984a",
-  #    "subnet-b9014fc3"
-  #  ]
+  default = [
+    "subnet-0e922442",
+    "subnet-2289984a",
+    "subnet-b9014fc3"
+  ]
 }
 
 
