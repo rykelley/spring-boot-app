@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UmslApp.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">UMSL</a> &gt; <a href="index.source.html" class="el_package">com.futureairlies.casestudy</a> &gt; <span class="el_source">UmslApp.java</span></div><h1>UmslApp.java</h1><pre class="source lang-java linenums">package com.futureairlies.casestudy;
+
+import com.futureairlies.casestudy.config.ApplicationProperties;
+import com.futureairlies.casestudy.config.DefaultProfileUtil;
+
+import io.github.jhipster.config.JHipsterConstants;
+
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.core.env.Environment;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.Collection;
+
+@SpringBootApplication
+@EnableConfigurationProperties({ApplicationProperties.class})
+public class UmslApp implements InitializingBean {
+
+<span class="fc" id="L26">    private static final Logger log = LoggerFactory.getLogger(UmslApp.class);</span>
+
+    private final Environment env;
+
+<span class="fc" id="L30">    public UmslApp(Environment env) {</span>
+<span class="fc" id="L31">        this.env = env;</span>
+<span class="fc" id="L32">    }</span>
+
+    /**
+     * Initializes UMSL.
+     * &lt;p&gt;
+     * Spring profiles can be configured with a program argument --spring.profiles.active=your-active-profile
+     * &lt;p&gt;
+     * You can find more information on how profiles work with JHipster on &lt;a href=&quot;https://www.jhipster.tech/profiles/&quot;&gt;https://www.jhipster.tech/profiles/&lt;/a&gt;.
+     */
+    @Override
+    public void afterPropertiesSet() throws Exception {
+<span class="fc" id="L43">        Collection&lt;String&gt; activeProfiles = Arrays.asList(env.getActiveProfiles());</span>
+<span class="pc bpc" id="L44" title="3 of 4 branches missed.">        if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_DEVELOPMENT) &amp;&amp; activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {</span>
+<span class="nc" id="L45">            log.error(&quot;You have misconfigured your application! It should not run &quot; +</span>
+                &quot;with both the 'dev' and 'prod' profiles at the same time.&quot;);
+        }
+<span class="pc bpc" id="L48" title="3 of 4 branches missed.">        if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_DEVELOPMENT) &amp;&amp; activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_CLOUD)) {</span>
+<span class="nc" id="L49">            log.error(&quot;You have misconfigured your application! It should not &quot; +</span>
+                &quot;run with both the 'dev' and 'cloud' profiles at the same time.&quot;);
+        }
+<span class="fc" id="L52">    }</span>
+
+    /**
+     * Main method, used to run the application.
+     *
+     * @param args the command line arguments.
+     */
+    public static void main(String[] args) {
+<span class="nc" id="L60">        SpringApplication app = new SpringApplication(UmslApp.class);</span>
+<span class="nc" id="L61">        DefaultProfileUtil.addDefaultProfile(app);</span>
+<span class="nc" id="L62">        Environment env = app.run(args).getEnvironment();</span>
+<span class="nc" id="L63">        logApplicationStartup(env);</span>
+<span class="nc" id="L64">    }</span>
+
+    private static void logApplicationStartup(Environment env) {
+<span class="nc" id="L67">        String protocol = &quot;http&quot;;</span>
+<span class="nc bnc" id="L68" title="All 2 branches missed.">        if (env.getProperty(&quot;server.ssl.key-store&quot;) != null) {</span>
+<span class="nc" id="L69">            protocol = &quot;https&quot;;</span>
+        }
+<span class="nc" id="L71">        String serverPort = env.getProperty(&quot;server.port&quot;);</span>
+<span class="nc" id="L72">        String contextPath = env.getProperty(&quot;server.servlet.context-path&quot;);</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">        if (StringUtils.isBlank(contextPath)) {</span>
+<span class="nc" id="L74">            contextPath = &quot;/&quot;;</span>
+        }
+<span class="nc" id="L76">        String hostAddress = &quot;localhost&quot;;</span>
+        try {
+<span class="nc" id="L78">            hostAddress = InetAddress.getLocalHost().getHostAddress();</span>
+<span class="nc" id="L79">        } catch (UnknownHostException e) {</span>
+<span class="nc" id="L80">            log.warn(&quot;The host name could not be determined, using `localhost` as fallback&quot;);</span>
+<span class="nc" id="L81">        }</span>
+<span class="nc" id="L82">        log.info(&quot;\n----------------------------------------------------------\n\t&quot; +</span>
+                &quot;Application '{}' is running! Access URLs:\n\t&quot; +
+                &quot;Local: \t\t{}://localhost:{}{}\n\t&quot; +
+                &quot;External: \t{}://{}:{}{}\n\t&quot; +
+                &quot;Profile(s): \t{}\n----------------------------------------------------------&quot;,
+<span class="nc" id="L87">            env.getProperty(&quot;spring.application.name&quot;),</span>
+            protocol,
+            serverPort,
+            contextPath,
+            protocol,
+            hostAddress,
+            serverPort,
+            contextPath,
+<span class="nc" id="L95">            env.getActiveProfiles());</span>
+<span class="nc" id="L96">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
