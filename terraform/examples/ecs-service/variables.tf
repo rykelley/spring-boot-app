@@ -3,21 +3,25 @@
 variable "aws_region" {
   description = "The AWS region in which all resources will be created"
   type        = string
+  default     = "us-east-1"
 }
 
 variable "aws_account_id" {
   description = "A comma-separated list of AWS Account IDs. Only these IDs may be operated on by this template."
   type        = string
+  default     = "522052662196"
 }
 
 variable "ecs_cluster_name" {
   description = "The name of the ECS cluster"
   type        = string
+  default     = "spring-boot-prod"
 }
 
 variable "ecs_cluster_instance_ami" {
   description = "The AMI to run on each instance in the ECS cluster"
   type        = string
+  default     = "ami-0f846c06eb372f19a"
 }
 
 variable "ecs_cluster_instance_type" {
@@ -29,11 +33,17 @@ variable "ecs_cluster_instance_type" {
 variable "ecs_cluster_instance_keypair_name" {
   description = "The name of the Key Pair that can be used to SSH to each instance in the ECS cluster"
   type        = string
+  default     = "null"
 }
 
 variable "ecs_cluster_vpc_subnet_ids" {
-  description = "A list of subnet ids in which the ECS cluster should be deployed. If using the standard Gruntwork VPC, these should typically be the private app subnet ids."
-  type        = list(string)
+  description = "A list of subnet ids in which the ECS cluster should be deployed."
+  type        = list(string
+  default = [
+    "subnet-013955a7437af7185",
+    "subnet-0543d7f41085a5cc0",
+    "subnet-0cc5981e3a627bb68",
+    ]
 }
 
 variable "vpc_id" {
@@ -56,6 +66,7 @@ variable "service_name" {
 variable "environment_name" {
   description = "The environment name in which the ALB is located. (e.g. prod)"
   type        = string
+  default = "alb-spring-boot-prod"
 }
 
 variable "container_http_port" {
