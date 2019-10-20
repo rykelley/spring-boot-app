@@ -98,7 +98,7 @@ variable "alb_container_port" {
 variable "alb_target_group_name" {
   description = "The name of the ALB Target Group that will contain the ECS Tasks. Setting this value to the empty string will default to the name 'var.service_name'."
   type        = string
-  default     = ""
+  default     = "tg-spring-boot-app"
 }
 
 

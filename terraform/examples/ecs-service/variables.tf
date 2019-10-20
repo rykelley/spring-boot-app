@@ -44,13 +44,13 @@ variable "vpc_id" {
 variable "container_name" {
   description = "The name of the container in the ECS Task Definition. This is only useful if you have multiple containers defined in the ECS Task Definition. Otherwise, it doesn't matter."
   type        = string
-  default     = "webapp"
+  default     = "spring-boot-app"
 }
 
 variable "service_name" {
   description = "The name of the ECS service to run"
   type        = string
-  default     = "ecs-alb"
+  default     = "ecs-spring-boot"
 }
 
 variable "environment_name" {
@@ -66,21 +66,17 @@ variable "container_http_port" {
   default = 3000
 }
 
-variable "server_text" {
-  description = "The Docker container we run in this example will display this text for every request."
-  type        = string
-  default     = "Hello"
-}
 
-variable "s3_test_file_name" {
-  description = "The name of the file to store in the S3 bucket. The ECS Task will try to download this file from S3 as a way to check that we are giving the Task the proper IAM permissions."
-  type        = string
-  default     = "s3-test-file.txt"
-}
+
 
 variable "alb_vpc_subnet_ids" {
   description = "A list of the subnets into which the ALB will place its underlying nodes. Include one subnet per Availabability Zone. If the ALB is public-facing, these should be public subnets. Otherwise, they should be private subnets."
   type        = list(string)
+  default = [
+    "subnet-0d5ce920b881f1ea7",
+    "subnet-07eb56ed7c079a808",
+    "subnet-07e5e8c349989d8c0"
+  ]
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -88,17 +84,7 @@ variable "alb_vpc_subnet_ids" {
 # These variables have defaults and may be overwritten
 # ---------------------------------------------------------------------------------------------------------------------
 
-variable "route53_hosted_zone_name" {
-  description = "The name of the Route53 Hosted Zone where we will create a DNS record for this service (e.g. gruntwork-dev.io)"
-  type        = string
-  default     = "gruntwork-dev.io"
-}
 
-variable "route53_tags" {
-  description = "Search for the domain in var.route53_hosted_zone_name by filtering using these tags"
-  type        = map(string)
-  default     = {}
-}
 
 variable "desired_number_of_tasks" {
   description = "How many copies of the task to run across the cluster"
@@ -124,30 +110,10 @@ variable "container_memory" {
   default     = 256
 }
 
-variable "skip_s3_test_file_creation" {
-  description = "Whether or not to skip s3 test file creation. Set this to true to see what happens when the container is set up to crash."
-  type        = bool
-  default     = false
-}
-
-variable "enable_ecs_deployment_check" {
-  description = "Whether or not to enable ECS deployment check. This requires installation of the check-ecs-service-deployment binary. See the ecs-deploy-check-binaries module README for more information."
-  type        = bool
-  default     = false
-}
-
 variable "deployment_check_timeout_seconds" {
   description = "Number of seconds to wait for the ECS deployment check before giving up as a failure."
   type        = number
   default     = 600
-}
-
-variable "container_command" {
-  description = "Command to run on the container. Set this to see what happens when a container is set up to exit on boot."
-  type        = list(string)
-  default     = []
-  # Example:
-  # default = ["echo", "Hello"]
 }
 
 variable "container_boot_delay_seconds" {

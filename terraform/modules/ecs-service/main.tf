@@ -1,7 +1,7 @@
 
 
 terraform {
-  
+
   required_version = ">= 0.12"
 }
 
@@ -101,37 +101,6 @@ resource "aws_alb_target_group" "ecs_service_without_sticky_sessions" {
     healthy_threshold   = var.health_check_healthy_threshold
     unhealthy_threshold = var.health_check_unhealthy_threshold
     matcher             = var.health_check_matcher
-  }
-}
-
-resource "aws_alb_target_group" "ecs_service_with_sticky_sessions" {
-  count = var.use_alb_sticky_sessions ? 1 : 0
-
-
-  depends_on = [null_resource.alb_exists]
-
-  name     = local.alb_target_group_name
-  port     = 80
-  protocol = var.alb_target_group_protocol
-  vpc_id   = var.vpc_id
-
-  deregistration_delay = var.alb_target_group_deregistration_delay
-  slow_start           = var.alb_slow_start
-
-  health_check {
-    interval            = var.health_check_interval
-    path                = var.health_check_path
-    port                = var.health_check_port
-    protocol            = var.health_check_protocol
-    timeout             = var.health_check_timeout
-    healthy_threshold   = var.health_check_healthy_threshold
-    unhealthy_threshold = var.health_check_unhealthy_threshold
-    matcher             = var.health_check_matcher
-  }
-
-  stickiness {
-    type            = var.alb_sticky_session_type
-    cookie_duration = var.alb_sticky_session_cookie_duration
   }
 }
 
@@ -247,10 +216,8 @@ resource "aws_iam_policy_attachment" "task_execution_policy_attachment" {
 }
 
 
-  provisioner "local-exec" {
-    command = "echo 'Sleeping for 30 seconds to work around ecs service creation bug in Terraform' && sleep 30"
-  }
-}
+
+
 
 
 locals {
@@ -289,17 +256,9 @@ locals {
     ),
     0,
   )
-
-
-
-  check_common_args = <<EOF
---loglevel ${var.deployment_check_loglevel} \
---aws-region ${var.aws_region} \
---ecs-cluster-arn ${var.ecs_cluster_arn} \
---check-timeout-seconds ${var.deployment_check_timeout_seconds}
-EOF
-
 }
+
+
 
 resource "null_resource" "ecs_deployment_check" {
   count = var.enable_ecs_deployment_check ? 1 : 0
