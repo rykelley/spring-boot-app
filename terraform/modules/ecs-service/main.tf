@@ -20,14 +20,10 @@ provider "aws" {
   allowed_account_ids = [var.aws_account_id]
 }
 
-# ---------------------------------------------------------------------------------------------------------------------
-# CREATE THE ECS CLUSTER
-# ---------------------------------------------------------------------------------------------------------------------
+
 
 module "ecs_cluster" {
-  # When using these modules in your own templates, you will need to use a Git URL with a ref attribute that pins you
-  # to a specific version of the modules, such as the following example:
-  # source = "git::git@github.com:gruntwork-io/module-ecs.git//modules/ecs-cluster?ref=v1.0.8"
+
   source = "../../modules/ecs-cluster"
 
   cluster_name = var.ecs_cluster_name
@@ -64,7 +60,7 @@ module "ecs_cluster" {
 
 # Create the User Data script that will run on boot for each EC2 Instance in the ECS Cluster.
 # - This script will configure each instance so it registers in the right ECS cluster and authenticates to the proper
-#   Docker registry.
+#   Docker registry or ECR with IAM profile 
 data "template_file" "user_data" {
   template = file("${path.module}/user-data/user-data.sh")
 
