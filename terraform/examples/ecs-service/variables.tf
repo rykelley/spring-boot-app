@@ -38,17 +38,18 @@ variable "ecs_cluster_instance_keypair_name" {
 
 variable "ecs_cluster_vpc_subnet_ids" {
   description = "A list of subnet ids in which the ECS cluster should be deployed."
-  type        = list(string
+  type        = list(string)
   default = [
     "subnet-013955a7437af7185",
     "subnet-0543d7f41085a5cc0",
-    "subnet-0cc5981e3a627bb68",
-    ]
+    "subnet-0cc5981e3a627bb68"
+  ]
 }
 
 variable "vpc_id" {
   description = "The id of the VPC in which to run the ECS cluster"
   type        = string
+  default     = "vpc-09d98e84363d15df3"
 }
 
 variable "container_name" {
@@ -66,7 +67,7 @@ variable "service_name" {
 variable "environment_name" {
   description = "The environment name in which the ALB is located. (e.g. prod)"
   type        = string
-  default = "alb-spring-boot-prod"
+  default     = "alb-spring-boot-prod"
 }
 
 variable "container_http_port" {

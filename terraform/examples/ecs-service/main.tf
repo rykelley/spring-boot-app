@@ -1,4 +1,5 @@
 
+
 terraform {
   required_version = ">= 0.12"
 }
@@ -12,6 +13,45 @@ provider "aws" {
   # Only this AWS Account ID may be operated on by this template
   allowed_account_ids = [var.aws_account_id]
 }
+
+
+
+module "ecs_cluster" {
+
+  source = "../../modules/ecs-cluster"
+
+  cluster_name = var.ecs_cluster_name
+
+  # Make the max size twice the min size to allow for rolling out updates to the cluster without downtime
+  cluster_min_size = 2
+  cluster_max_size = 4
+
+  cluster_instance_ami          = var.ecs_cluster_instance_ami
+  cluster_instance_type         = var.ecs_cluster_instance_type
+  cluster_instance_keypair_name = var.ecs_cluster_instance_keypair_name
+  cluster_instance_user_data    = data.template_file.user_data.rendered
+
+  vpc_id                           = var.vpc_id
+  vpc_subnet_ids                   = var.ecs_cluster_vpc_subnet_ids
+  allow_ssh_from_security_group_id = ""
+  allow_ssh                        = false
+
+  alb_security_group_ids     = [module.alb.alb_security_group_id]
+  num_alb_security_group_ids = 1
+
+  custom_tags_security_group = {
+    Name = "ECS"
+  }
+
+  custom_tags_ec2_instances = [
+    {
+      key                 = "Name"
+      value               = "ecs-spring-boot-cluster"
+      propagate_at_launch = true
+    },
+  ]
+}
+
 
 data "template_file" "user_data" {
   template = file("${path.module}/user-data/user-data.sh")
@@ -36,13 +76,11 @@ module "alb" {
   http_listener_ports                    = [80, 5000]
   https_listener_ports_and_ssl_certs     = []
   https_listener_ports_and_acm_ssl_certs = []
-  ssl_policy                             = "ELBSecurityPolicy-TLS-1-1-2017-01"
+  #ssl_policy                             = "ELBSecurityPolicy-TLS-1-1-2017-01"
 
   vpc_id         = var.vpc_id
   vpc_subnet_ids = var.alb_vpc_subnet_ids
 }
-
-
 
 
 
@@ -53,10 +91,12 @@ data "template_file" "ecs_task_container_definitions" {
 
   vars = {
     container_name = var.container_name
-
-    image               = "522052662196.dkr.ecr.us-east-1.amazonaws.com/spring-boot-app"
+    # For this example, we run the Docker container defined under examples/example-docker-image.
+    image               = "gruntwork/docker-test-webapp"
     version             = "latest"
+    server_text         = var.server_text
     aws_region          = var.aws_region
+    s3_test_file        = "s3://${aws_s3_bucket.s3_test_bucket.id}/${var.s3_test_file_name}"
     cpu                 = 512
     memory              = var.container_memory
     container_http_port = var.container_http_port
@@ -65,6 +105,12 @@ data "template_file" "ecs_task_container_definitions" {
   }
 }
 
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+# CREATE THE ECS SERVICE
+# In Amazon ECS, Docker containers are run as "ECS Tasks", typically as part of an "ECS Service".
+# ---------------------------------------------------------------------------------------------------------------------
 
 module "ecs_service" {
 
@@ -98,6 +144,8 @@ module "ecs_service" {
   enable_ecs_deployment_check      = var.enable_ecs_deployment_check
   deployment_check_timeout_seconds = var.deployment_check_timeout_seconds
 }
+
+
 
 resource "aws_alb_listener_rule" "path_based_example" {
 

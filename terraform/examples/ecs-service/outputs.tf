@@ -2,6 +2,10 @@ output "alb_dns_name" {
   value = module.alb.alb_dns_name
 }
 
+output "service_dns_name" {
+  value = "${var.ecs_cluster_name}.${data.aws_route53_zone.sample.name}"
+}
+
 output "alb_security_group_id" {
   value = module.alb.alb_security_group_id
 }
