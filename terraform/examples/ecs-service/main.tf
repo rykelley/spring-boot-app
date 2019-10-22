@@ -92,7 +92,7 @@ data "template_file" "ecs_task_container_definitions" {
   vars = {
     container_name = var.container_name
     # For this example, we run the Docker container defined under examples/example-docker-image.
-    image               = "gruntwork/docker-test-webapp"
+    image               = "522052662196.dkr.ecr.us-east-1.amazonaws.com/spring-boot-app"
     version             = "latest"
     server_text         = var.server_text
     aws_region          = var.aws_region
