@@ -74,9 +74,6 @@ module "alb" {
   is_internal_alb  = false
 
   http_listener_ports = [80, 5000]
-  #https_listener_ports_and_ssl_certs     = []
-  #https_listener_ports_and_acm_ssl_certs = []
-  #ssl_policy                             = "ELBSecurityPolicy-TLS-1-1-2017-01"
 
   vpc_id         = var.vpc_id
   vpc_subnet_ids = var.alb_vpc_subnet_ids
@@ -90,8 +87,7 @@ data "template_file" "ecs_task_container_definitions" {
   template = file("${path.module}/containers/container-definition.json")
 
   vars = {
-    container_name = var.container_name
-    # For this example, we run the Docker container defined under examples/example-docker-image.
+    container_name      = var.container_name
     image               = "522052662196.dkr.ecr.us-east-1.amazonaws.com/spring-boot-app"
     version             = "latest"
     server_text         = var.server_text
