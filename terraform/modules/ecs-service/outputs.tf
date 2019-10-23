@@ -1,23 +1,31 @@
-output "alb_dns_name" {
-  value = module.alb.alb_dns_name
+
+
+output "service_iam_role_arn" {
+  value = element(concat(aws_iam_role.ecs_service_role.*.arn, [""]), 0)
 }
 
-output "service_dns_name" {
-  value = "${var.ecs_cluster_name}.${data.aws_route53_zone.sample.name}"
+output "service_arn" {
+  value = local.ecs_service_arn
 }
 
-output "alb_security_group_id" {
-  value = module.alb.alb_security_group_id
+
+
+output "ecs_task_iam_role_name" {
+  value = aws_iam_role.ecs_task.name
 }
 
-output "http_listener_arns" {
-  value = module.alb.http_listener_arns
+output "ecs_task_iam_role_arn" {
+  value = aws_iam_role.ecs_task.arn
 }
 
-output "https_listener_non_acm_cert_arns" {
-  value = module.alb.https_listener_non_acm_cert_arns
+output "ecs_task_execution_iam_role_name" {
+  value = aws_iam_role.ecs_task_execution_role.name
 }
 
-output "https_listener_acm_cert_arns" {
-  value = module.alb.https_listener_acm_cert_arns
+output "ecs_task_execution_iam_role_arn" {
+  value = aws_iam_role.ecs_task_execution_role.arn
+}
+
+output "aws_ecs_task_definition_arn" {
+  value = aws_ecs_task_definition.task.arn
 }
