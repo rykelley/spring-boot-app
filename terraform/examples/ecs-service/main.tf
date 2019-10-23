@@ -73,9 +73,9 @@ module "alb" {
   environment_name = var.environment_name
   is_internal_alb  = false
 
-  http_listener_ports                    = [80, 5000]
-  https_listener_ports_and_ssl_certs     = []
-  https_listener_ports_and_acm_ssl_certs = []
+  http_listener_ports = [80, 5000]
+  #https_listener_ports_and_ssl_certs     = []
+  #https_listener_ports_and_acm_ssl_certs = []
   #ssl_policy                             = "ELBSecurityPolicy-TLS-1-1-2017-01"
 
   vpc_id         = var.vpc_id
@@ -96,7 +96,6 @@ data "template_file" "ecs_task_container_definitions" {
     version             = "latest"
     server_text         = var.server_text
     aws_region          = var.aws_region
-    s3_test_file        = "s3://${aws_s3_bucket.s3_test_bucket.id}/${var.s3_test_file_name}"
     cpu                 = 512
     memory              = var.container_memory
     container_http_port = var.container_http_port
@@ -116,8 +115,8 @@ module "ecs_service" {
 
   source = "../../modules/ecs-service"
 
-  aws_account_id = var.aws_account_id
-  aws_region     = var.aws_region
+
+  aws_region = var.aws_region
 
   service_name     = var.service_name
   environment_name = var.environment_name
@@ -140,9 +139,7 @@ module "ecs_service" {
   alb_container_name = var.container_name
   alb_container_port = var.container_http_port
 
-  use_auto_scaling                 = false
-  enable_ecs_deployment_check      = var.enable_ecs_deployment_check
-  deployment_check_timeout_seconds = var.deployment_check_timeout_seconds
+  use_auto_scaling = false
 }
 
 

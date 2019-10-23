@@ -7,15 +7,14 @@ terraform {
 
 
 
-resource "aws_ecs_service" "service_with_elb_without_auto_scaling" {
-  count      = var.is_associated_with_elb && (! var.use_auto_scaling) ? 1 : 0
+resource "aws_ecs_service" "service_with_elb" {
   depends_on = [aws_iam_role_policy.ecs_service_policy]
 
   name            = var.service_name
   cluster         = var.ecs_cluster_arn
   task_definition = aws_ecs_task_definition.task.arn
 
-  
+
   iam_role = aws_iam_role.ecs_service_role[0].arn
 
   desired_count                      = var.desired_number_of_tasks
@@ -275,12 +274,3 @@ locals {
   )
 
 }
-
-resource "null_resource" "ecs_deployment_check" {
-  count = var.enable_ecs_deployment_check ? 1 : 0
-
-  triggers = {
-    ecs_service_arn         = local.ecs_service_arn
-    ecs_task_definition_arn = local.ecs_service_task_definition_arn
-    desired_count           = local.ecs_service_desired_count
-  }
