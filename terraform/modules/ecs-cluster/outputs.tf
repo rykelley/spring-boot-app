@@ -21,3 +21,10 @@ output "ecs_instance_security_group_id" {
     value = aws_security_group.ecs.id
 }
 
+output "ecs_instance_iam_role_arn" {
+    value = aws_iam_role.ecs.arn
+}
+
+output "ecs_instance_iam_role_name" {
+  value = replace(aws_iam_role.ecs.arn, "/.*/+(.*)/", "$1")
+}
