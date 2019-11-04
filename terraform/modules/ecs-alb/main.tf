@@ -41,12 +41,6 @@ resource "aws_ecs_service" "service_asg" {
 }
 
 resource "aws_ecs_task_definition" "task" {
-    family = var.service_name
-
-    }
-}
-
-resource "aws_ecs_task_definition" "task" {
     family = var.serivce_name
     container_definitions = var.ecr_task_container_definitions
     task_role_arn = aws_iam_role_.ecs_task.task_arn

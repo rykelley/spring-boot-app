@@ -79,7 +79,7 @@ data "template_file" "user_data" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 module "alb" {
-  source = "git::git@github.com:gruntwork-io/module-load-balancer.git//modules/alb?ref=v0.14.1"
+  source = "../../modules/ecs-alb"
 
   aws_account_id = var.aws_account_id
   aws_region     = var.aws_region
@@ -89,9 +89,7 @@ module "alb" {
   is_internal_alb  = false
 
   http_listener_ports                    = [80, 5000]
-  https_listener_ports_and_ssl_certs     = []
-  https_listener_ports_and_acm_ssl_certs = []
-  ssl_policy                             = "ELBSecurityPolicy-TLS-1-1-2017-01"
+  
 
   vpc_id         = var.vpc_id
   vpc_subnet_ids = var.alb_vpc_subnet_ids
@@ -205,7 +203,7 @@ module "ecs_service" {
   # When using these modules in your own templates, you will need to use a Git URL with a ref attribute that pins you
   # to a specific version of the modules, such as the following example:
   # source = "git::git@github.com:gruntwork-io/module-ecs.git//modules/ecs-service-with-alb?ref=v1.0.8"
-  source = "../../modules/ecs-service-with-alb"
+  source = "../../modules/ecs-alb"
 
   aws_account_id = var.aws_account_id
   aws_region     = var.aws_region

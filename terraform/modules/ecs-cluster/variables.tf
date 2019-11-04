@@ -49,7 +49,7 @@ variable "cluster_instance_spot_price" {
 
 variable "vpc_id" {
   description = "description"
-  type = spring
+  type = string
 }
 
 variable "vpc_subnet_ids" {
@@ -63,7 +63,7 @@ variable "allow_ssh_from_security_group_id" {
 }
 
 variable "allow_ssh" {
-  description = "Set to true if var.allow_ssh_from_security_group_id is non-empty; false, otherwise. 
+  description = "Set to true if var.allow_ssh_from_security_group_id is non-empty; false, otherwise." 
   type        = bool
 }
 

@@ -103,12 +103,12 @@ resource "aws_iam_role" "ecs" {
   lifecycle {
       create_before_destroy = true
   }
-}
+
 provisioner "local-exec" {
     command = "echo 'sleeping for 15 seconds'; sleep 15"
   }
-
 }
+
 
 data "aws_iam_policy" "ecs_role" {
     statement {
