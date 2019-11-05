@@ -65,9 +65,7 @@ data "template_file" "user_data" {
 module "alb" {
   source = "../../modules/ecs-alb"
 
-  aws_account_id = var.aws_account_id
-  aws_region     = var.aws_region
-
+  
   alb_name         = var.service_name
   environment_name = var.environment_name
   is_internal_alb  = false
